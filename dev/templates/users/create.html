@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% from "_formhelpers.html" import render_field %}
+
+{% block title %}Test{% endblock %}
+
+{% block content %}
+<div class="container">
+	<div class="col-sm-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">Create user</div>
+			<div class="panel-body">
+				{% with messages = get_flashed_messages() %}
+					{% if messages %}
+						{{ messages[0] }}
+					{% endif %}
+				{% endwith %}
+				<form class="form-horizontal" method="POST" action="/users/create">
+					{{ form.csrf_token() }}
+					{{ render_field(form.first_name) }}
+					{{ render_field(form.last_name) }}
+					{{ render_field(form.username) }}
+					{{ render_field(form.password) }}
+					<div class="form-group">
+						<div class="col-sm-6 col-sm-offset-3">
+							<input class="btn btn-primary" type="submit" value="Create" />
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

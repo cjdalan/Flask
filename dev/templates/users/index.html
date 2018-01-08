@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Test{% endblock %}
+
+{% block content %}
+	<a class="btn btn-primary" href="/users/create">Create user</a>
+
+	<table class="table" id="usersTbl"></table>	
+
+{% endblock %}
+
+{% block scripts %}
+	<script type="text/javascript">
+		(function() {
+			var usersTbl;
+
+			function getUsers() {
+				return $.ajax({
+					url: apiUrl + "/users",
+					method: "GET"
+				});
+			}
+
+			function init() {
+				usersTbl = $("#usersTbl").DataTable({
+					columns: [
+						{ 
+							title: "Name", 
+							data: function(row, type, set) {
+								return row.first_name + " " + row.last_name;
+							}
+						},
+						{ title: "Username", data: "username" }
+					]
+				});
+
+				getUsers()
+					.then(function(data) {
+						usersTbl.clear()
+							.rows.add(data)
+							.draw();
+					});
+			}
+
+			init();
+		}());
+	</script>
+{% endblock %}
